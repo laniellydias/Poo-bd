@@ -9,15 +9,17 @@ async function CriarConexao() {
     }
 });
 let con = await pool.connect();
- /*let res = await con.query('
+ let ingrediente = await con.query(`
     creat table Ingrediente(
         id serial primary Key, 
         produtos varchar,
         valores integer,
-        estoque integer, 
-    )'
- ); */ 
- await con.query("insert into Ingrediente(produtos, valores, estoque) valores ($1), ($2), ($3)", ["farinha", "tomate", "frango"], ["35,00", "25,00" "20,00"], ["100%", "75%", "55%"]);
+        estoque integer
+    )`
+ ); 
+ await con.query("insert into Ingrediente(produtos, valores, estoque) valores ($1), ($2), ($3)",
+  ["farinha", "tomate", "frango"],
+  ["35,00", "25,00",  "20,00"], ["100%", "75%", "55%"]);
  await con.query("update Ingrediente set produtos = $1 where id = $2", ["tomate", 3]);
  await con.query("delete from Ingrediente where upper(produto) like 'tomate' ");
  let res = await con.query("select * from Ingrediente");
@@ -25,5 +27,7 @@ let con = await pool.connect();
  for (let tupla of tuplas) {
      console.log(tupla);
  }
+     console.log(ingrediente);
  con.release();
+}
  CriarConexao();
